@@ -1,0 +1,22 @@
+FROM python:3.7.2-stretch
+
+# Set an environment variable with the directory
+# where we'll be running the app
+ENV APP /app
+
+# Create the directory and instruct Docker to operate
+# from there from now on
+RUN mkdir $APP
+WORKDIR $APP
+
+EXPOSE 5000
+
+RUN apt-get -y update
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD [ "uwsgi", "--ini", "uwsgi.ini"]
+
